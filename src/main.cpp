@@ -1,8 +1,27 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <cctype>
 #include <vector>
 #include "EmbeddedSystem.hpp"
+
+bool equalsIgnoreCase(std::string a, std::string b)
+{
+    if(a.size() != b.size())
+    {
+        return false;
+    }
+
+    for(int i = 0; i < a.size(); i++)
+    {
+        if(tolower(a[i]) != tolower(b[i]))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 int main()
 {
@@ -31,14 +50,14 @@ int main()
         }
 
         // Command: exit
-        if(tokens[0] == "exit" || tokens[0] == "Exit" || tokens[0] == "EXIT")
+        if(equalsIgnoreCase(tokens[0], "exit"))
         {
             std::cout << "\nExiting Embedded System CLI...\n";
             break;
         }
 
         // Command: help
-        else if(tokens[0] == "help" || tokens[0] == "Help" || tokens[0] == "HELP")
+        else if(equalsIgnoreCase(tokens[0], "help"))
         {
             std::cout << "\nAvailable commands:\n";
             std::cout << "  help    Display this help message\n";
@@ -46,7 +65,7 @@ int main()
         }
 
         // Module: GPIO
-        else if(tokens[0] == "gpio" || tokens[0] == "GPIO")
+        else if(equalsIgnoreCase(tokens[0], "gpio"))
         {
             if(tokens.size() == 1)
             {
@@ -54,7 +73,7 @@ int main()
             }
 
             // Subcommand: help
-            else if(tokens[1] == "help" || tokens[1] == "Help" || tokens[1] == "HELP")
+            else if(equalsIgnoreCase(tokens[1], "help"))
             {
                 std::cout << "\nGPIO commands:\n";
                 std::cout << "  mode    Set GPIO pin mode\n";
@@ -64,7 +83,7 @@ int main()
             }
 
             // Subcommand: mode
-            else if(tokens[1] == "mode" || tokens[1] == "Mode" || tokens[1] == "MODE")
+            else if(equalsIgnoreCase(tokens[1], "mode"))
             {
                 if(tokens.size() == 2)
                 {
@@ -81,12 +100,12 @@ int main()
                         PinMode mode;
                         int pin = std::stoi(tokens[2]);
 
-                        if(tokens[3] == "output" || tokens[3] == "OUTPUT")
+                        if(equalsIgnoreCase(tokens[3], "output"))
                         {
                             mode = OUTPUT;
                             system.getGPIO().setMode(pin,mode);
                         }
-                        else if(tokens[3] == "input" || tokens[3] == "INPUT")
+                        else if(equalsIgnoreCase(tokens[3], "input"))
                         {
                             mode = INPUT;
                             system.getGPIO().setMode(pin,mode);
@@ -108,7 +127,7 @@ int main()
             }
 
             // Subcommand: write
-            else if(tokens[1] == "write" || tokens[1] == "Write" || tokens[1] == "WRITE")
+            else if(equalsIgnoreCase(tokens[1], "write"))
             {
                 if(tokens.size() == 2)
                 {
@@ -125,12 +144,12 @@ int main()
                         PinState state;
                         int pin = std::stoi(tokens[2]);
 
-                        if(tokens[3] == "low" || tokens[3] == "LOW")
+                        if(equalsIgnoreCase(tokens[3], "low"))
                         {
                             state = LOW;
                             system.getGPIO().write(pin,state);
                         }
-                        else if(tokens[3] == "high" || tokens[3] == "HIGH")
+                        else if(equalsIgnoreCase(tokens[3], "high"))
                         {
                             state = HIGH;
                             system.getGPIO().write(pin,state);
@@ -152,7 +171,7 @@ int main()
             }
 
             // Subcommand: read
-            else if(tokens[1] == "read" || tokens[1] == "Read" || tokens[1] == "READ")
+            else if(equalsIgnoreCase(tokens[1], "read"))
             {
                 if(tokens.size() == 2)
                 {
@@ -184,7 +203,7 @@ int main()
         }
 
         // Module: ADC
-        else if(tokens[0] == "adc" || tokens[0] == "ADC")
+        else if(equalsIgnoreCase(tokens[0], "adc"))
         {
             if(tokens.size() == 1)
             {
@@ -192,7 +211,7 @@ int main()
             }
 
             // Subcommand: help
-            else if(tokens[1] == "help" || tokens[1] == "Help" || tokens[1] == "HELP")
+            else if(equalsIgnoreCase(tokens[1], "help"))
             {
                 std::cout << "\nADC commands:\n";
                 std::cout << "  set     Set ADC channel value\n";
@@ -201,7 +220,7 @@ int main()
             }
 
             // Subcommand: read
-            else if(tokens[1] == "read" || tokens[1] == "Read" || tokens[1] == "READ")
+            else if(equalsIgnoreCase(tokens[1], "read"))
             {
                 if(tokens.size() == 2)
                 {
@@ -227,7 +246,7 @@ int main()
             }
 
             // Subcommand: set
-            else if(tokens[1] == "set" || tokens[1] == "Set" || tokens[1] == "SET")
+            else if(equalsIgnoreCase(tokens[1], "set"))
             {
                 if(tokens.size() == 2)
                 {
@@ -272,7 +291,7 @@ int main()
         }
 
         // Module: UART
-        else if(tokens[0] == "uart" || tokens[0] == "UART")
+        else if(equalsIgnoreCase(tokens[0], "uart"))
         {
             if(tokens.size() == 1)
             {
@@ -280,7 +299,7 @@ int main()
             }
 
             // Subcommand: help
-            else if(tokens[1] == "help" || tokens[1] == "Help" || tokens[1] == "HELP")
+            else if(equalsIgnoreCase(tokens[1], "help"))
             {
                 std::cout << "\nUART commands:\n";
                 std::cout << "  begin   Initialize UART\n";
@@ -290,7 +309,7 @@ int main()
             }
             
             // Subcommand: status
-            else if(tokens[1] == "status" || tokens[1] == "Status" || tokens[1] == "STATUS")
+            else if(equalsIgnoreCase(tokens[1], "status"))
             {
                 UARTState state = system.getUART().status();
 
@@ -311,7 +330,7 @@ int main()
             }
 
             // Subcommand: begin
-            else if(tokens[1] == "begin" || tokens[1] == "Begin" || tokens[1] == "BEGIN")
+            else if(equalsIgnoreCase(tokens[1], "begin"))
             {
                 if(tokens.size() == 2)
                 {
@@ -337,7 +356,7 @@ int main()
             }
 
             // Subcommand: send
-            else if(tokens[1] == "send" || tokens[1] == "Send" || tokens[1] == "SEND")
+            else if(equalsIgnoreCase(tokens[1], "send"))
             {
                 if(tokens.size() == 2)
                 {
@@ -362,6 +381,10 @@ int main()
                     system.getUART().send(message);
                 }
             }
+            else
+            {
+                std::cout << "ERROR: Unknown UART subcommand\n";
+            }    
         }
         else
         {
