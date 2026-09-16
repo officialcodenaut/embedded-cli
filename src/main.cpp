@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cctype>
 #include <vector>
+#include "CLI.hpp"
 #include "EmbeddedSystem.hpp"
 
 bool equalsIgnoreCase(std::string a, std::string b)
@@ -25,6 +26,7 @@ bool equalsIgnoreCase(std::string a, std::string b)
 
 int main()
 {
+    CLI cli;
     EmbeddedSystem system;
     std::string command;
 
@@ -50,9 +52,8 @@ int main()
         }
 
         // Command: exit
-        if(equalsIgnoreCase(tokens[0], "exit"))
+        if(!cli.handleCommand(tokens, system))
         {
-            std::cout << "\nExiting Embedded System CLI...\n";
             break;
         }
 
