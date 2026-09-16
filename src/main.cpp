@@ -75,11 +75,18 @@ int main()
             // Subcommand: help
             else if(equalsIgnoreCase(tokens[1], "help"))
             {
-                std::cout << "\nGPIO commands:\n";
-                std::cout << "  mode    Set GPIO pin mode\n";
-                std::cout << "  write   Write GPIO pin state\n";
-                std::cout << "  read    Read GPIO pin state\n";
-                std::cout << "  help    Display this help message\n\n";
+                if(tokens.size() == 2)
+                {
+                    std::cout << "\nGPIO commands:\n";
+                    std::cout << "  mode    Set GPIO pin mode\n";
+                    std::cout << "  write   Write GPIO pin state\n";
+                    std::cout << "  read    Read GPIO pin state\n";
+                    std::cout << "  help    Display this help message\n\n";
+                }
+                else if(tokens.size() > 2)
+                {
+                    std::cout << "ERROR: Too many arguments\n";
+                }
             }
 
             // Subcommand: mode
@@ -213,10 +220,17 @@ int main()
             // Subcommand: help
             else if(equalsIgnoreCase(tokens[1], "help"))
             {
-                std::cout << "\nADC commands:\n";
-                std::cout << "  set     Set ADC channel value\n";
-                std::cout << "  read    Read ADC channel value\n";
-                std::cout << "  help    Display this help message\n\n";
+                if(tokens.size() == 2)
+                {
+                    std::cout << "\nADC commands:\n";
+                    std::cout << "  set     Set ADC channel value\n";
+                    std::cout << "  read    Read ADC channel value\n";
+                    std::cout << "  help    Display this help message\n\n";
+                }
+                else if(tokens.size() > 2)
+                {
+                    std::cout << "ERROR: Too many arguments\n";
+                }
             }
 
             // Subcommand: read
@@ -301,31 +315,45 @@ int main()
             // Subcommand: help
             else if(equalsIgnoreCase(tokens[1], "help"))
             {
-                std::cout << "\nUART commands:\n";
-                std::cout << "  begin   Initialize UART\n";
-                std::cout << "  send    Send message through UART\n";
-                std::cout << "  status  Display UART status\n";
-                std::cout << "  help    Display this help message\n\n";
+                if(tokens.size() == 2)
+                {
+                    std::cout << "\nUART commands:\n";
+                    std::cout << "  begin   Initialize UART\n";
+                    std::cout << "  send    Send message through UART\n";
+                    std::cout << "  status  Display UART status\n";
+                    std::cout << "  help    Display this help message\n\n";
+                }
+                else if(tokens.size() > 2)
+                {
+                    std::cout << "ERROR: Too many arguments\n";
+                }
             }
             
             // Subcommand: status
             else if(equalsIgnoreCase(tokens[1], "status"))
             {
-                UARTState state = system.getUART().status();
-
-                switch(state)
+                if(tokens.size() == 2)
                 {
-                    case UNINITIALIZED:
-                    std::cout << "UART = UNINITIALIZED\n";
-                    break;
+                    UARTState state = system.getUART().status();
 
-                    case READY:
-                    std::cout << "UART = READY\n";
-                    break;
+                    switch(state)
+                    {
+                        case UNINITIALIZED:
+                        std::cout << "UART = UNINITIALIZED\n";
+                        break;
 
-                    default:
-                    std::cout << "ERROR: UART status not recognized\n";
-                    break;
+                        case READY:
+                        std::cout << "UART = READY\n";
+                        break;
+
+                        default:
+                        std::cout << "ERROR: UART status not recognized\n";
+                        break;
+                    }
+                }
+                else if(tokens.size() > 2)
+                {
+                    std::cout << "ERROR: Too many arguments\n";
                 }
             }
 
